@@ -7,8 +7,12 @@
     {% csrf_token %}
     <div style="color:white;">
     {% bootstrap_form form %}
-    <input type="submit" name='publish'  class='save btn btn-primary' value="Publish" />
+    {% if object %}
+    <input type="submit" name='update'  class='save btn btn-primary' value="Update" />
+    {% else %}
+    <input type="submit" name='_publish'  class='save btn btn-primary' value="Publish" />
     <input style="margin-left: 20px;" type="submit" name='save' class='save btn btn-primary' value="Save as Draft" /> 
+    {% endif %}
     </div>
   </form>
 {% endblock %}
