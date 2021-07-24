@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+{% block body_base %}
+  <div style="width: 120%;height:100%;margin:3em;border-radius:10px;position:relative;left:-10%;background-color:white;box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.575), 0 6px 20px 0 rgba(255, 255, 255, 0.842);">
+    <div style="width:100%;text-align:center;">
+      <h1 class='loader'>{{post.title}}</h1>
+    </div>
+    <div class="row" style="padding:50px;">
+      <div class="col-lg-8 col-sm-12">
+        <div style="width:100%;text-align:center;">
+        <img style="max-width:100%;max-height:600px;" src="https://blog-connect.herokuapp.com/media/{{post.image}}" alt="Not Found">
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-sm-12">
+        <h4>@ {{post.author}}</h4>
+        <p>{{post.text}}</p>
+        {% if post.published_date %}
+          <p>{{post.published_date}}</p>
+        {% else %}
+          <a class='btn btn-success' href="{% url 'post_publish' pk=post.pk %}">Publish</a> &emsp;
+        {% endif %}
+
+        {% if post.author == user %}
+          <a class="btn btn-secondary" href="{% url 'post_update' pk=post.pk %}"><span class='glyphicon glyphicon-pencil'></span>Edit</a> &emsp;
+          <a class="btn btn-secondary" href="{% url 'post_delete' pk=post.pk %}"><span class='glyphicon glyphicon-remove'></span>Remove</a>
+        {% endif %}
+        <br><br>
+
+        <form method="POST" action="{% url 'comment_create' pk=post.pk %}">
+          {% csrf_token %}
+          <input style="width:85%;margin:auto;height:35px;border-radius:25px;"  name="textcomment" placeholder=" Type Here Comment...">
+          <button class="btn btn-success" style="border-radius:25px;" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+        </form>
+        <br><br>
+        <h4>Commets</h4>
+        <div class="jumbotron" style="padding:10px; overflow-y:auto;max-height:33vh;">
+          {% for comment in post.comments.all %}
+              <p>{{ comment.text }}</p>
+              <p>Posted by: <strong>{{ comment.author }}</strong></p>
+              <p>{{ comment.created_date}}</p>
+              <hr>
+          {% empty %}
+              <h5>There is No Comments For this Post</h5>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

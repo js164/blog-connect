@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+{% load bootstrap4 %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>BLOG</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/blogapp.css' %}">
+    <script src="https://kit.fontawesome.com/396b1c60a2.js" crossorigin="anonymous"></script>  
+  </head>
+  <body style="background-size:cover;background-image:url(https://blog-connect.herokuapp.com/media/background.jpg);background-repeat: no-repeat;background-attachment: fixed;">
+      <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'post_list' %}">Feeds</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'mypost' %}">My Posts</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'post_create' %}">New Post </a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'post_draft_list' %}">Draft </a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out </a></li>
+              <li class="nav-item"><a class="nav-link">Welcome: {{user.username}}</a></li>
+              {% else %}
+              <li><a class="nav-link" href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+              <li><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-user"></span>Log In</a></li>
+              {% endif %}
+            </ul>
+          </div>
+      </div>
+      </nav>
+      <div class="container">
+      <!-- <div class="row"> -->
+        <!-- <div class="col-md-8 loader"> -->
+          {% block body_base %}
+          {% endblock %}
+        <!-- </div> -->
+      <!-- </div> -->
+      </div>
+
+  </body>
+</html>

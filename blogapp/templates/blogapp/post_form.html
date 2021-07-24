@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+{% load bootstrap4 %}
+{% block body_base %}
+  <h1 style="color:white;">New Post</h1>
+  <form class="post-form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="color:white;">
+    {% bootstrap_form form %}
+    <input type="submit" name='publish'  class='save btn btn-primary' value="Publish" />
+    <input style="margin-left: 20px;" type="submit" name='save' class='save btn btn-primary' value="Save as Draft" /> 
+    </div>
+  </form>
+{% endblock %}

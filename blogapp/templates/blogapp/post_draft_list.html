@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+{% block body_base %}
+<div style="color: white;">
+  <br>
+  {% for post in post_list %}
+    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1>
+    <p>Created on: {{post.created_date|date}}</p>
+      <p>{{ post.text|truncatechars:200 }}</p>
+    <p>Comments: {{ post.comments.count }}</p>
+  {% empty %}
+    <br>
+    <h1>You Have No Draft Posts</h1>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+{% block body_base %}
+<div style="color: white;">
+  <form method="POST">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{post.title}}"</p>
+    <input type="submit" class='btn btn-danger' value="Confirm">
+  </form>
+</div>
+{% endblock %}
