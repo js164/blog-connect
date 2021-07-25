@@ -112,6 +112,7 @@ def like_post(request):
 #         context['post']=Post.objects.get(id=self.kwargs.get('pk'))
 #         return context
 
+@login_required
 def comment_create(request,pk):
     if request.method=='POST':
         post=Post.objects.get(id=pk)
