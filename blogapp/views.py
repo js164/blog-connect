@@ -27,14 +27,14 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
 
-class MyPost(ListView):
+class MyPost(LoginRequiredMixin,ListView):
     model=Post
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user).order_by('-created_date')
 
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin,DetailView):
     model=Post
 
 class CreatePostView(LoginRequiredMixin,CreateView):
@@ -51,18 +51,18 @@ class CreatePostView(LoginRequiredMixin,CreateView):
         self.object.save()
         return super().form_valid(form)
 
-class PostUpdateView(UpdateView,LoginRequiredMixin):
+class PostUpdateView(LoginRequiredMixin,UpdateView):
     login_url='/login/'
     redirect_field_name='blogapp/post_detail.html'
     form_class=PostForm
     model=Post
 
-class PostDeleteView(DeleteView,LoginRequiredMixin):
+class PostDeleteView(LoginRequiredMixin,DeleteView):
     model=Post
     success_url=reverse_lazy('post_list')
 
 
-class PostDraftView(ListView,LoginRequiredMixin):
+class PostDraftView(LoginRequiredMixin,ListView):
     login_url='/login/'
     template_name='blogapp/post_draft_list.html'
     model=Post
