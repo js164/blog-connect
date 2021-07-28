@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['blog-connect.herokuapp.com','127.0.0.1:8000']
+ALLOWED_HOSTS = ['127.0.0.1','blog-connect.herokuapp.com']
 
 
 # Application definition
@@ -42,10 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'blogapp',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 ROOT_URLCONF = 'myblog.urls'
 
 TEMPLATES = [
@@ -84,6 +87,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+import dj_database_url
+
+DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'),conn_max_age=600, ssl_require=True)
 
 
 # Password validation
@@ -130,3 +137,10 @@ LOGOUT_REDIRECT_URL='/'
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET')
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
