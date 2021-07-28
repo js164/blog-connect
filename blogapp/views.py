@@ -35,6 +35,7 @@ class MyPost(LoginRequiredMixin,ListView):
 
 
 class PostDetailView(LoginRequiredMixin,DetailView):
+    login_url='/login/'
     model=Post
 
 class CreatePostView(LoginRequiredMixin,CreateView):
@@ -95,24 +96,6 @@ def like_post(request):
         return HttpResponse('Error')
 
 
-# class comment_create(LoginRequiredMixin,CreateView):
-#     login_url='/login/'
-#     model=Comment
-#     fields=('text',)
-
-#     def form_valid(self,form):
-#         self.object=form.save(commit=False)
-#         self.object.post=Post.objects.get(id=self.kwargs.get('pk'))
-#         self.object.author=self.request.user.username
-#         self.object.save()
-#         return super().form_valid(form)
-    
-#     def get_context_data(self,**kwargs):
-#         context=super().get_context_data(**kwargs)
-#         context['post']=Post.objects.get(id=self.kwargs.get('pk'))
-#         return context
-
-@login_required
 def comment_create(request,pk):
     if request.method=='POST':
         post=Post.objects.get(id=pk)

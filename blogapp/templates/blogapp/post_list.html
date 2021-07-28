@@ -5,9 +5,9 @@
 
 {% for post in post_list %}
 <br><br>
- <div class="card" style="width: 80%;margin-left:10%">
+ <div class="card" style="width:80%;margin:auto">
     <p class="card-text"><h4 style="padding-left: 10px;"><i class="fa fa-user" aria-hidden="true"></i> {{post.author}}</h4></p>
-    <img class="card-img-top" src="https://blog-connect.herokuapp.com/media/{{post.image}}" alt="Card image cap">
+    <img class="card-img-top" src="{{post.image.url}}" alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title"><h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1></h5>
       <p class="card-text">{{post.text}}</p>
@@ -27,7 +27,7 @@
             <i id="{{post.pk}}" class="far fa-heart"></i>
           {% endif %}
         {% else %}
-          <i id="disable" class="far fa-heart"></i>
+          <i id="logintolike{{post.pk}}" class="far fa-heart"></i>
         {% endif %}
         <div style="float: right;" id="{{post.pk}}" class="likecount">{{post.post_likes.count}}</div>
       </button>
@@ -41,6 +41,7 @@
   <script type="text/javascript">
   function addlike(postpk){
     $("i[id="+postpk+"]").toggleClass("far fas")
+    $("i[id='logintolike"+postpk+"']").removeClass("far fa-heart ").html('Login To Like')
     event.preventDefault()
     csrf_token = $.cookie('csrftoken');
     $.ajax({
@@ -58,7 +59,6 @@
         },
         error:function(result) {
           console.log("error")
-          console.log(result)
         }
     });
 }
