@@ -1,0 +1,65 @@
+{% load register_library %}
+
+{% for post in post_list %}
+<br><br>
+ <div class="card" style="width:80%;margin:auto;box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.575), 0 6px 20px 0 rgba(255, 255, 255, 0.842);">
+    <p class="card-text"><a href="{% url 'userprofile' pk=post.author.pk %}"><h4 style="padding-left: 10px;"><img style="width:40px;height:40px;border-radius:50%;margin-right:10px;" src="/media/{{post.author|get_img}}" alt="Not found">{{post.author}}</h4></a></p>
+    <img class="card-img-top" src="http://127.0.0.1:8000/media/{{post.image}}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title"><h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1></h5>
+      <p class="card-text">{{post.text}}</p>
+      {% if post.published_date %}
+        Published on: {{post.published_date|date}}
+      {% else %}
+        Created on: {{post.created_date|date}}
+      {% endif %}
+    </div>
+    <div class="card-body">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}"/>
+      <button class="likebutton btn btn-link" onclick="addlike({{post.pk}})" value="{{post.pk}}">
+        {% if user.is_authenticated %}
+          {% if user|has_liked:post %}
+            <i id="{{post.pk}}" class="fas fa-heart"></i>
+          {% else %}
+            <i id="{{post.pk}}" class="far fa-heart"></i>
+          {% endif %}
+        {% else %}
+          <i id="logintolike{{post.pk}}" class="far fa-heart"></i>
+        {% endif %}
+        <div style="float: right;" id="{{post.pk}}" class="likecount">{{post.post_likes.count}}</div>
+      </button>
+      <a href="{% url 'post_detail' pk=post.pk %}" class="card-link btn btn-link"><i class="fa fa-comments" aria-hidden="true"></i>{{post.comments.count}}</a>
+    </div>
+  </div>
+  <p></p>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+  <script type="text/javascript">
+  function addlike(postpk){
+    $("i[id="+postpk+"]").toggleClass("far fas")
+    $("i[id='logintolike"+postpk+"']").removeClass("far fa-heart ").html('Login To Like')
+    csrf_token = $.cookie('csrftoken');
+    $.ajax({
+        type: "POST",
+        url: "{% url 'like_post' %}",
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", csrf_token);
+       },
+        data: {
+            'pk':postpk,
+        },
+        success: function (result) {
+            $(".likecount[id="+postpk+"]").html(result)
+            console.log("sucesssss")
+        },
+        error:function(result) {
+          console.log("error")
+        }
+    });
+}
+</script>
+{% empty %}
+  <br>
+  <h2 style="color: white;">No Posts</h2>
+{% endfor %}

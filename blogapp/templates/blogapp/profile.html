@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+{% load register_library %}
+
+{% block body_base %}
+    <div style="display: flex;width:100%; justify-content:space-around;padding-top:20px;" >
+        <div style="display: flex;flex-direction:column;position:relative">
+            <img src="/media/{{userprofile.photo}}" alt="/media/user.jpg" style="height: 200px;border-radius:50%;width:200px;">
+            <div style="color: white;text-align:center;">
+                {% if userprofile.private_account %}
+                    <i class="fa fa-lock"></i>Private Account
+                {% else %}
+                    <i class="fa fa-unlock"></i> Public Account
+                {% endif %}
+            </div>
+            {% if user.pk == postuserpk %}
+                <div><a href="{% url 'editprofile' %}"><i style="text-align: center;color:white;font-size:30px;background-color:orange;border-radius:50%;padding:9px;position:absolute;top:0%;right:0%" class="fas fa-edit"></i></a></div>
+            {% endif %}
+        </div>
+        <div style="color:white;display: flex;flex-direction: column;">
+            <div><h1>{{username}}</h1></div>
+            <div><h6>{{email}}</h6></div>
+            <div>
+                {% if user.pk == postuserpk %}
+                    <a href="{% url 'followers' %}" style="color: white;"> Followes: {{followes}}</a> <br>
+                    <a href="{% url 'following' %}" style="color: white;"> Following: {{following}} </a><br><br>
+                    <a href="{% url 'requests' %}" class="btn btn-primary">Requests: {{requests}}</a>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-secondary" href="{% url 'post_create' %}">New Post </a>
+                        <a class="btn btn-secondary" href="{% url 'post_draft_list' %}">Draft </a>
+                    </div>
+                {% else%}
+                    Followes: {{followes}} <br>
+                    Following: {{following}} <br><br>
+                    {% if user|is_following:postuserpk %}
+                        <a href="{% url 'unfollow' pk=postuserpk %}" class="btn btn-secondary"><i class="fas fa-user-alt-slash"></i>UnFollow</a>
+                    {% else %}
+                        {% if user|request_sended:postuserpk %}
+                            <a href="{% url 'requestdeletebysender' pk=postuserpk %}" class="btn btn-danger"><i class="fas fa-user-times"></i> Unsend Request</a>
+                        {% else %}
+                            <a href="{% url 'requestsend' pk=postuserpk %}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Follow</a>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <hr style="border-top: 1px solid white">
+    <hr style="border-top: 1px solid white">
+
+    {% if user|can_view:postuserpk %}
+        {% include "blogapp/_post_list.html" %}
+    {% else %}
+        <div style="text-align: center;display:flex;flex-direction:column;color:white;">
+            <i style="font-size: 2rem;" class="fa fa-lock"></i>
+            <h3>This Account is Private</h3>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'blogapp/base.html' %}
+
+{% block body_base %}
+<form method="GET" style="position:relative;left:15%;margin-top:20px;" action="{% url 'finduser' %}">{% csrf_token %}
+    <input style="width:60%;margin:auto;height:50px;border-radius:25px;" type="search" name="search" placeholder="find user...">
+    <button class="btn btn-success" style="border-radius:25px;height:50px;" type="submit"> Search </button>
+</form>
+
+{% include 'blogapp/_post_list.html' %}
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+{% load register_library %}
+
+{% block body_base %}
+    <h1 style="color: white;text-align:center;">Followes</h1>
+    <table style="width:100%;font-size:2rem;margin-top:50px;">
+        <div style="margin-top:20px;">
+            {% for r in object_list %}
+            <tr>
+                <td style="width: 60%;"><a style="color: white;" href="{% url 'profile' pk=r.following.pk %}">{{r.following}}</a></td>
+                <td>
+                    {% if user|is_following:r.following.pk %}
+                        <a href="{% url 'unfollow' pk=r.following.pk %}" class="btn btn-secondary"><i class="fas fa-user-alt-slash"></i>UnFollow</a>
+                    {% else %}
+                        {% if user|request_sended:r.following.pk %}
+                            <a href="{% url 'requestdeletebysender' pk=r.following.pk %}" class="btn btn-danger"><i class="fas fa-user-times"></i> Unsend Request</a>
+                        {% else %}
+                            <a href="{% url 'requestsend' pk=r.following.pk %}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Follow</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+                <h4 style="color: white;">No Followes</h4>
+            {% endfor %}
+        </div>
+    </table>
+
+{% endblock %}

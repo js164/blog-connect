@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+
+{% block body_base %}
+    <h1 style="color: white;text-align:center;">Following</h1>
+    <table style="width:100%;font-size:2rem;margin-top:50px;">
+        <div style="margin-top:20px;">
+            {% for r in object_list %}
+            <tr>
+                <td style="width: 60%;"><a style="color: white;" href="{% url 'profile' pk=r.followers.pk %}">{{r.followers}}</a></td>
+                <td>
+                    <a href="{% url 'unfollow' pk=r.followers.pk %}" class="btn btn-secondary"><i class="fas fa-user-alt-slash"></i>UnFollow</a>
+                </td>
+            </tr>
+            {% empty %}
+                <h4 style="color: white;">No Followes</h4>
+            {% endfor %}
+        </div>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends 'blogapp/base.html' %}
+
+{% block body_base %}
+    <h1 style="color: white;text-align:center;">Friend Requests</h1>
+    <table style="width:100%;font-size:2rem;margin-top:50px;">
+        <div style="margin-top:20px;">
+            {% for r in object_list %}
+            <tr>
+                <td style="border-bottom: 1px solid white;width: 60%;"><a style="color: white;" href="{% url 'profile' pk=r.sendby.pk %}">{{r.sendby}}</a></td>
+                <td style="border-bottom: 1px solid white;">
+                    <a style="color:green;cursor:pointer;" href="{% url 'requestconfirem' pk=r.sendby.pk %}">
+                    <i style="margin-right: 5px;" class="fas fa-handshake" aria-hidden="true"></i>Accept</a>
+                </td>
+                <td style="border-bottom: 1px solid white;">
+                    <a style="color:red;cursor:pointer;" href="{% url 'requestdeletebyreciver' pk=r.sendby.pk %}">
+                    <i style="margin-right: 5px;" class="fa fa-trash-o" aria-hidden="true"></i>Reject</a>
+                </td>
+            </tr>
+            {% empty %}
+                <h4 style="color: white;">No Request...</h4>
+            {% endfor %}
+        </div>
+    </table>
+
+{% endblock %}

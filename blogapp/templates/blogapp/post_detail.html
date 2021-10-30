@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% extends 'blogapp/base.html' %}
+{% load register_library %}
 {% block body_base %}
   <div style="width: 120%;height:100%;margin:3em;border-radius:10px;position:relative;left:-10%;background-color:white;box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.575), 0 6px 20px 0 rgba(255, 255, 255, 0.842);">
     <div style="width:100%;text-align:center;">
@@ -8,12 +9,12 @@
     <div class="row" style="padding:50px;">
       <div class="col-lg-8 col-sm-12">
         <div style="width:100%;text-align:center;">
-        <img style="max-width:100%;max-height:600px;" src="{{post.image.url}}" alt="Not Found">
+        <img style="max-width:100%;max-height:600px;" src="http://127.0.0.1:8000/media/{{post.image}}" alt="Not Found">
         </div>
       </div>
 
       <div class="col-lg-4 col-sm-12">
-        <h4>@ {{post.author}}</h4>
+        <h4><img style="width:40px;height:40px;border-radius:50%;margin-right:10px;" src="/media/{{post.author|get_img}}" alt="Not found"> {{post.author}}</h4>
         <p>{{post.text}}</p>
         {% if post.published_date %}
           <p>{{post.published_date}}</p>

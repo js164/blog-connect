@@ -1,0 +1,72 @@
+{% extends 'blogapp/base.html' %}
+{% load bootstrap4 %}
+
+{% block body_base %}
+    <h1>{{user.username}}</h1>
+    <form method="POST" enctype="multipart/form-data" action="{% url 'updateprofile' pk=user.pk %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <img id="imageshow" src="/media/{{img}}" alt="Not Found" />
+            <div>
+                <input type="file" name='profile' id="profile" onchange="readURL(this);">
+            </div>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" name='private' class="form-check-input" id="exampleCheck1" {% if is_private %} checked {% endif %}>
+          <label class="form-check-label" for="exampleCheck1">Private Account</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imageshow')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <style>
+        h1,form{
+            color: white;
+            text-align: center;
+            margin: 20px;
+        }
+        img{
+            width:180px;
+            height: 180px;
+            border-radius: 50%;
+        }
+        input[type=file]{
+          padding:10px;
+          background:#2d2d2d;
+        }
+        .form-check{
+            margin: 20px;
+        }
+    </style>
+    <style>
+        h1,form{
+            color: white;
+            text-align: center;
+            margin: 20px;
+        }
+        img{
+            max-width:180px;
+            border-radius: 50%;
+        }
+        input[type=file]{
+          padding:10px;
+          background:#2d2d2d;
+        }
+        .form-check{
+            margin: 20px;
+        }
+    </style>
+{% endblock %}

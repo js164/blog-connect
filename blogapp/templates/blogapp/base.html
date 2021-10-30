@@ -13,9 +13,20 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/blogapp.css' %}">
     <script src="https://kit.fontawesome.com/396b1c60a2.js" crossorigin="anonymous"></script>  
+    <style>
+      ::-webkit-scrollbar{
+        background-color: black;
+        width: .6rem;
+      }
+      ::-webkit-scrollbar-thumb{
+        background-color: #007bff;
+        border-radius: .5rem;
+        scroll-margin-block-start:initial;
+      }
+    </style>
   </head>
-  <body style="background-size:cover;background-image:url(https://blog-connect.herokuapp.com/media/background.jpg);background-repeat: no-repeat;background-attachment: fixed;">
-      <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
+  <body style="background-size:cover;background-image:url(http://127.0.0.1:8000/media/background.jpg);background-repeat: no-repeat;background-attachment: fixed;">
+      <nav class="navbar sticky-top navbar-expand-lg  navbar-dark bg-primary">
         <div class="container">
           <a class="navbar-brand" href="{% url 'post_list' %}">Feeds</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,12 +35,12 @@
         
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
+              <li class="nav-item"><a class="nav-link" href="{% url 'explore' %}">Explore</a></li>
               {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'mypost' %}">My Posts</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'post_create' %}">New Post </a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'post_draft_list' %}">Draft </a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out </a></li>
-              <li class="nav-item"><a class="nav-link">Welcome: {{user.username}}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'profile' pk=user.pk %}"><i class="fas fa-user"></i> {{user.username}}</a></li>
               {% else %}
               <li><a class="nav-link" href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
               <li><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-user"></span>Log In</a></li>

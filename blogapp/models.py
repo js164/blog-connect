@@ -5,7 +5,15 @@ from django.contrib.auth import get_user_model
 
 User=get_user_model()
 
-# Create your models here.
+class UserProfile(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    photo=models.ImageField(upload_to='profile_image/',null=True)
+    private_account=models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.username
+
+
 class Post(models.Model):
     author=models.ForeignKey(User, null=True,on_delete=models.CASCADE)
     title=models.CharField(max_length=256)
@@ -13,14 +21,10 @@ class Post(models.Model):
     created_date=models.DateTimeField(default=timezone.now)
     published_date=models.DateTimeField(blank=True,null=True)
     image=models.ImageField(upload_to='post_image/',null=True)
-    # likes=models.ManyToManyField(User,related_name='post_likes')
 
     def publish(self):
         self.published_date=timezone.now()
         self.save()
-
-    def approve_comment(self):
-        return self.comments.filter(approve_comment=True)
 
     def get_absolute_url(self):
         return reverse("post_detail",kwargs={'pk':self.pk})
@@ -45,11 +49,31 @@ class Comment(models.Model):
     text=models.TextField()
     created_date=models.DateTimeField(default=timezone.now)
 
-    def get_absolute_url(self):
-        return reverse("post_list")
 
     def __str__(self):
         return self.text
     
     class Meta:
         ordering = ['-created_date']
+
+
+class Requestsend(models.Model):
+    sendby=models.ForeignKey(User,related_name='sendby',on_delete=models.CASCADE)
+    sendto=models.ForeignKey(User,related_name='sendto',on_delete=models.CASCADE)
+    req_confirmed=models.BooleanField(default=False)
+
+    class Meta:
+        unique_together=('sendby','sendto')
+
+    def __str__(self):
+        return self.sendby.username+"-->"+self.sendto.username
+
+class Friends(models.Model):
+    following=models.ForeignKey(User,related_name='following',on_delete=models.CASCADE)
+    followers=models.ForeignKey(User,related_name='followers',on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together=('following','followers')
+
+    def __str__(self):
+        return self.following.username+"-->"+self.followers.username
