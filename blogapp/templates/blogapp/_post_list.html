@@ -4,7 +4,7 @@
 <br><br>
  <div class="card" style="width:80%;margin:auto;box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.575), 0 6px 20px 0 rgba(255, 255, 255, 0.842);">
     <p class="card-text"><a href="{% url 'userprofile' pk=post.author.pk %}"><h4 style="padding-left: 10px;"><img style="width:40px;height:40px;border-radius:50%;margin-right:10px;" src="/media/{{post.author|get_img}}" alt="Not found">{{post.author}}</h4></a></p>
-    <img class="card-img-top" src="http://127.0.0.1:8000/media/{{post.image}}" alt="Card image cap">
+    <img class="card-img-top" src="{{post.image}}" alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title"><h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1></h5>
       <p class="card-text">{{post.text}}</p>
