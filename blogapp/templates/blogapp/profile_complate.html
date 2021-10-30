@@ -6,7 +6,7 @@
     <form method="POST" enctype="multipart/form-data" action="{% url 'updateprofile' pk=user.pk %}">
         {% csrf_token %}
         <div class="form-group">
-            <img id="imageshow" src="/media/{{img}}" alt="Not Found" />
+            <img id="imageshow" src="{{img}}" alt="Not Found" />
             <div>
                 <input type="file" name='profile' id="profile" onchange="readURL(this);">
             </div>
