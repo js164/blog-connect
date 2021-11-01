@@ -5,7 +5,7 @@
 {% block body_base %}
     <div style="display: flex;width:100%; justify-content:space-around;padding-top:20px;" >
         <div style="display: flex;flex-direction:column;position:relative">
-            <img src="{{userprofile.photo}}" alt="/media/user.jpg" style="height: 200px;border-radius:50%;width:200px;">
+            <img src="/media/user.jpg" alt="/media/user.jpg" style="height: 200px;border-radius:50%;width:200px;">
             <div style="color: white;text-align:center;">
                 {% if userprofile.private_account %}
                     <i class="fa fa-lock"></i>Private Account
