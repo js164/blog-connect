@@ -56,5 +56,5 @@ def get_img(user):
         obj=UserProfile.objects.get(user=user)
         return obj.photo
     except:
-        return 'user.jpg'
+        return '/media/user.jpg'
         
